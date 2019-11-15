@@ -1,0 +1,53 @@
+/* Para ver bien las casillas (Quizás provisional)
+.casilla {
+    border: 1px dashed black
+    !!!!!!!!! AUMENTAR TAMAÑO DE CASILLA AL QUITAR BORDES !!!!!!!!!
+}
+-------------------------- */
+
+@media(max-width:400px) {
+    #tablero {
+        width: 80px;
+        height: 80px;
+
+    }
+    .casilla {
+        display: inline-block;
+        width: 2px;
+        height: 2px;
+        background-image: url("Textures/casilla.png");
+        float: left;
+    }
+    .serpiente {
+        background-size: contain;
+    }
+    
+}
+
+@media(min-width:401px) {
+    body,html{
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        background-color: green!important; 
+    }
+    #tablero {
+        width: 2920px;
+        height: 2920px;
+        margin-left: 800px;
+        margin-top: 800px;
+        margin-bottom: 800px;
+    }
+    .casilla {
+        /* display: inline-block; */
+        background-image: url("Textures/casilla.png");
+        width: 73px;
+        height: 73px;
+        float: left;
+    }
+    .serpiente {
+        /* background-image:url('Textures/cabezaSerpienteAbajo.png'); */
+        background-size: contain;
+    }
+}

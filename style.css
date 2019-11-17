@@ -33,21 +33,33 @@
         background-color: green!important; 
     }
     #tablero {
-        width: 2920px;
-        height: 2920px;
-        margin-left: 800px;
-        margin-top: 800px;
-        margin-bottom: 800px;
+        width: 800px;
+        height: 800px;
+        /* margin-left: 300px;
+        margin-top: 300px;
+        margin-bottom: 300px; */
     }
     .casilla {
         /* display: inline-block; */
         background-image: url("Textures/casilla.png");
-        width: 73px;
-        height: 73px;
+        width: 20px;
+        height: 20px;
         float: left;
     }
     .serpiente {
         /* background-image:url('Textures/cabezaSerpienteAbajo.png'); */
         background-size: contain;
+    }
+    *.fruta {
+        width: 20px;
+        height: 20px;
+        float: left;
+        background-color: #ff1f4c;
+    }
+    *.frutaCheta {
+        width: 20px;
+        height: 20px;
+        float: left;
+        background-color: gold;
     }
 }

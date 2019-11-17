@@ -1,12 +1,33 @@
 let i = 1;
 // Indice con el cual se definirá la id de cada 'div.casilla'
 
+let velocidadSerpiente = 250;
 let coordenadasX = 220;
 let coordenadasY = 510;
 
 let serpienteInicial = Math.floor(Math.random() * 1600) + 1;
-// let serpienteInicial = 1561
-// serpienteInicial es un número random que abarca desde el 1 hasta el 1600
+
+function tieneNumero(array, numero) {
+    for (let indice = 0; indice < array.length; indice++) {
+        if (array[indice] === numero) {
+            return true
+        }
+    }
+    return false
+};
+
+function crearFruta(frutas) {
+            if (Math.floor(Math.random() * 100) <= 2) {
+                frutas.push(Math.floor(Math.random() * 1600) + 1);
+                $('#' + frutas[fruitIndex]).addClass('frutaCheta');
+                $('#' + frutas[fruitIndex]).removeClass('casilla');
+            } else {
+                frutas.push(Math.floor(Math.random() * 1600) + 1);
+                $('#' + frutas[fruitIndex]).addClass('fruta');
+                $('#' + frutas[fruitIndex]).removeClass('casilla');
+            }
+        }
+// serpienteInicial es un número random que abarca desde el 1 hasta el 1601
 
 
 for (columna = 0; columna < 40; columna++) {
@@ -29,7 +50,7 @@ for (columna = 0; columna < 40; columna++) {
             i++
         }
     }
-}; 
+};
 // Se construye el tablero de 40x40 casillasf
 // Se define serpienteInicial como una casilla con una clase extra '.serpiente'
 // Con el valor obtenido en la variable serpienteInicial definida anteriormente (número al azar entre 1 y 1600)
@@ -38,38 +59,7 @@ for (columna = 0; columna < 40; columna++) {
 serpienteMoviendose = serpienteInicial;
 // Se crea una variable serpienteMoviendose idéntica a serpienteInicial, sólo que esta la modificaremos a lo largo del juego
 
-// function moverDerecha() {
-//     flechaDerecha = setInterval(function() { 
-//                 if (serpienteMoviendose % 40 != 0) {
-//                     $("#" + serpienteMoviendose).removeClass("serpiente");
-//                     serpienteMoviendose++
-//                     $("#" + serpienteMoviendose).addClass("serpiente");
-//                 } else if (serpienteMoviendose % 40 === 0) {
-//                     $("#" + serpienteMoviendose).removeClass("serpiente");
-//                     serpienteMoviendose -= 39;
-//                     $("#" + serpienteMoviendose).addClass("serpiente");
-//                 }
-//             }, 600)
-// };
 
-// function moverAbajo() {
-//     flechaAbajo = setInterval(function() {
-//         if (serpienteMoviendose % 40 != 0 || serpienteMoviendose % 40 === 0) {
-//             $("#" + serpienteMoviendose).removeClass("serpiente");
-//             serpienteMoviendose += 40;
-//             $("#" + serpienteMoviendose).addClass("serpiente");
-//         }   
-//         if (serpienteMoviendose > 1560) {
-//             $("#" + serpienteMoviendose).removeClass("serpiente");
-//             serpienteMoviendose -= 1560;
-//             $("#" + serpienteMoviendose).addClass("serpiente");
-//         }
-//     }, 600)
-// };
-
-function detener(flecha) {
-    return clearInterval(flecha);
-};
 
 direccionSerpiente = "quieta";
 
@@ -78,7 +68,7 @@ $(document).keydown(function (event) {
     if (event.which === 32) {
         direccionSerpiente = "quieta";
         console.log("detener");
-}
+    }
     else if (event.which === 39) {
         direccionSerpiente = "derecha";
         console.log("moverDerecha");
@@ -95,12 +85,17 @@ $(document).keydown(function (event) {
 });
 
 
-$(document).on("scroll", function(){
-    console.log("Y" + Math.floor(scrollY) + " | X" + Math.floor(scrollX) )
+$(document).on("scroll", function () {
+    console.log("Y" + Math.floor(scrollY) + " | X" + Math.floor(scrollX))
 });
 
 // Bloque de código que se repetirá cada 500 milisegundos para actualizar posición de serpiente
 setInterval(function () {
+    if (serpienteMoviendose === frutas[fruitIndex]) {
+        $('#' + frutas[fruitIndex]).removeClass('fruta');
+        $('#' + frutas[fruitIndex]).addClass('casilla');
+        frutas.splice(frutas[fruitIndex], 0);
+    }
     if (direccionSerpiente === "quieta") {
         // console.log("Funciona!!")
         serpienteMoviendose = serpienteMoviendose;
@@ -112,7 +107,7 @@ setInterval(function () {
             serpienteMoviendose -= 39;
             $("#" + serpienteMoviendose).css("background-image", "url('Textures/cabezaSerpienteDerecha.png')");
             $("#" + serpienteMoviendose).addClass("serpiente");
-        } else { 
+        } else {
             $("#" + serpienteMoviendose).css("background-image", "url('Textures/casilla.png')");
             $("#" + serpienteMoviendose).removeClass("serpiente");
             serpienteMoviendose += 1
@@ -137,7 +132,7 @@ setInterval(function () {
         }
         // Fin del movimiento abajo --------------------------------------------------------------------------------------->
     } else if (direccionSerpiente === "izquierda") {
-        if ((serpienteMoviendose % 40 === 1) || (serpienteMoviendose === 1)) { 
+        if ((serpienteMoviendose % 40 === 1) || (serpienteMoviendose === 1)) {
             $("#" + serpienteMoviendose).css("background-image", "url('Textures/casilla.png')");
             $("#" + serpienteMoviendose).removeClass("serpiente");
             serpienteMoviendose += 39;
@@ -165,9 +160,31 @@ setInterval(function () {
             $("#" + serpienteMoviendose).addClass("serpiente");
         }
     }
-}, 300)
 
 
+}, velocidadSerpiente)
+
+let fruitIndex = 0;
+frutas = []
+setInterval(() => {
+    if (direccionSerpiente != 'quieta') {
+        function crearFruta(frutas) {
+            if (Math.floor(Math.random() * 100) <= 0) {
+                frutas.push(Math.floor(Math.random() * 1600) + 1);
+                $('#' + frutas[fruitIndex]).addClass('frutaCheta');
+                $('#' + frutas[fruitIndex]).removeClass('casilla');
+            } else {
+                frutas.push(Math.floor(Math.random() * 1600) + 1);
+                $('#' + frutas[fruitIndex]).addClass('fruta');
+                $('#' + frutas[fruitIndex]).removeClass('casilla');
+            }
+        }
+        crearFruta(frutas)
+        fruitIndex++
+    } else if (direccionSerpiente === 'quieta') {
+        return false
+    }
+}, 10);
 
 
 

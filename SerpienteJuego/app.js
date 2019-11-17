@@ -261,7 +261,7 @@ frutas = []
 setInterval(() => {
     if (direccionSerpiente != 'quieta') {
         function crearFruta(frutas) {
-            if (Math.floor(Math.random() * 100) <= 4) {
+            if (Math.floor(Math.random() * 100) <= 9) {
                 frutas.push(Math.floor(Math.random() * 1600) + 1);
                 $('#' + frutas[fruitIndex]).addClass('frutaCheta');
                 $('#' + frutas[fruitIndex]).removeClass('casilla');
@@ -276,12 +276,14 @@ setInterval(() => {
     } else if (direccionSerpiente === 'quieta') {
         return false
     }
-}, 4000);
+}, 10);
 
 
 // Poner contador de 60 segundos que cuando llegue a cero termine el juego
 // Poner contador de puntaje que contará las frutas comidas
 // El que come más frutas en 60 segundos gana
+// Idea: cada fruta cheta da 5 segundos más de tiempo
+// Idea: hacer que desaparezcan las frutas que no fueron comidas despues de X segundos
 
 
 

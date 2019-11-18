@@ -48,16 +48,17 @@
         /* rgb(197, 234, 84) */
     }
     
-    *.fruta {
+    
+    *.frutaCheta {
         background-size: contain;
-        background-image: url("Textures/fruta.png");
+        background-image: url("Textures/frutaCheta.png");
         width: 20px;
         height: 20px;
         float: left;
     }
-    *.frutaCheta {
+    *.fruta {
         background-size: contain;
-        background-image: url("Textures/frutaCheta.png");
+        background-image: url("Textures/fruta.png");
         width: 20px;
         height: 20px;
         float: left;

@@ -1,7 +1,8 @@
 let i = 1;
 // Indice con el cual se definirá la id de cada 'div.casilla'
 
-let velocidadSerpiente = 100;
+let fruitSpawnRate = 4000;
+let velocidadSerpiente = 150;
 let coordenadasX = 220;
 let coordenadasY = 510;
 
@@ -276,7 +277,7 @@ setInterval(() => {
     } else if (direccionSerpiente === 'quieta') {
         return false
     }
-}, 10);
+}, fruitSpawnRate);
 
 
 // Poner contador de 60 segundos que cuando llegue a cero termine el juego

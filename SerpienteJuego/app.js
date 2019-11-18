@@ -19,13 +19,25 @@ function tieneNumero(array, numero) {
 
 function crearFruta(frutas) {
             if (Math.floor(Math.random() * 100) <= 2) {
-                frutas.push(Math.floor(Math.random() * 1600) + 1);
-                $('#' + frutas[fruitIndex]).addClass('frutaCheta');
-                $('#' + frutas[fruitIndex]).removeClass('casilla');
+                frutaNueva = Math.floor(Math.random() * 1600) + 1;
+                if ($('#' + frutaNueva).hasClass('fruta') || $('#' + frutaNueva).hasClass('frutaCheta')) {
+                    crearFruta(frutas)
+                } else {
+                    frutas.push(frutaNueva)
+                    $('#' + frutas[fruitIndex]).addClass('frutaCheta');
+                    $('#' + frutas[fruitIndex]).removeClass('casilla');
+                }
+                
             } else {
-                frutas.push(Math.floor(Math.random() * 1600) + 1);
-                $('#' + frutas[fruitIndex]).addClass('fruta');
-                $('#' + frutas[fruitIndex]).removeClass('casilla');
+                frutaNueva = Math.floor(Math.random() * 1600) + 1;
+                if ($('#' + frutaNueva).hasClass('fruta') || $('#' + frutaNueva).hasClass('frutaCheta')) {
+                    crearFruta(frutas)
+                } else {
+                    frutas.push(frutaNueva)
+                    $('#' + frutas[fruitIndex]).addClass('fruta');
+                    $('#' + frutas[fruitIndex]).removeClass('casilla');
+                }
+                
             }
         }
 // posicionSerpienteInicial es un número random que abarca desde el 1 hasta el 1601
@@ -261,17 +273,7 @@ let fruitIndex = 0;
 frutas = []
 setInterval(() => {
     if (direccionSerpiente != 'quieta') {
-        function crearFruta(frutas) {
-            if (Math.floor(Math.random() * 100) <= 2) {
-                frutas.push(Math.floor(Math.random() * 1600) + 1);
-                $('#' + frutas[fruitIndex]).addClass('frutaCheta');
-                $('#' + frutas[fruitIndex]).removeClass('casilla');
-            } else {
-                frutas.push(Math.floor(Math.random() * 1600) + 1);
-                $('#' + frutas[fruitIndex]).addClass('fruta');
-                $('#' + frutas[fruitIndex]).removeClass('casilla');
-            }
-        }
+        
         crearFruta(frutas)
         fruitIndex++
     } else if (direccionSerpiente === 'quieta') {

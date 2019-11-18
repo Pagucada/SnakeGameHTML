@@ -1,8 +1,8 @@
 let i = 1;
 // Indice con el cual se definirá la id de cada 'div.casilla'
 
-let fruitSpawnRate = 4000;
-let velocidadSerpiente = 150;
+let fruitSpawnRate = 5500;
+let velocidadSerpiente = 180;
 let coordenadasX = 220;
 let coordenadasY = 510;
 
@@ -262,7 +262,7 @@ frutas = []
 setInterval(() => {
     if (direccionSerpiente != 'quieta') {
         function crearFruta(frutas) {
-            if (Math.floor(Math.random() * 100) <= 9) {
+            if (Math.floor(Math.random() * 100) <= 2) {
                 frutas.push(Math.floor(Math.random() * 1600) + 1);
                 $('#' + frutas[fruitIndex]).addClass('frutaCheta');
                 $('#' + frutas[fruitIndex]).removeClass('casilla');

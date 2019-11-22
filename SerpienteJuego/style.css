@@ -29,14 +29,23 @@
         padding: 0;
     }
     body {
-        background-color: hsl(120, 67%, 35%)!important; 
+        background-color: #1d951d !important; 
+    }
+    div.container {
+        justify-content: center;
     }
     #tablero {
         width: 800px;
         height: 800px;
-        margin-left: 300px;
+        margin-left: 14%;
         /*margin-top: 300px;
         margin-bottom: 300px; */
+    }
+    #contadorTiempo {
+        color: black;
+        font-size: 60px;
+        font-weight: 700;
+        text-align: center;
     }
     .casilla {
         /* display: inline-block; */
@@ -48,7 +57,23 @@
         /* rgb(197, 234, 84) */
     }
     
-    
+    #estadoDeJuego {
+        font-size: 40px;
+        position: fixed;
+        left: 600px;
+        opacity: 0.5;
+    }
+    #cartelFinal {
+        border: 2px #062277 solid;
+        border-radius: 10px;
+        padding: 10px;
+        position: fixed;
+        top: 150px;
+        left: 795px;
+        font-size: 50px;
+        background-color: royalblue;
+    }
+
     *
     *.fruta {
         background-size: contain;

@@ -47,6 +47,12 @@
         font-weight: 700;
         text-align: center;
     }
+    #contadorPuntos {
+        color: #fffb00;
+        font-size: 60px;
+        font-weight: 700;
+        text-align: center;
+    }
     .casilla {
         /* display: inline-block; */
         background-size: contain;
@@ -59,8 +65,8 @@
     
     #estadoDeJuego {
         font-size: 40px;
-        position: fixed;
-        left: 600px;
+        position: absolute;
+        left: 32%;
         opacity: 0.5;
     }
     #cartelFinal {

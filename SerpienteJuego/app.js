@@ -1,12 +1,16 @@
+$('#cartelFinal').css('opacity', '0');
+$('#cartelFinal').slideUp(1);
+
+
 let i = 1;
 // Indice con el cual se definirá la id de cada 'div.casilla'
-
+let probabilidadFrutaCheta = 49
 let puntuacion = 0;
 let juego = 'activo';
-let tasaAparicionFruta = 1000;
+let tasaAparicionFruta = 2500;
 let direccionSerpiente = "quieta";
 let estadoDeJuego = "quieto";
-let velocidadSerpiente = 180;
+let velocidadSerpiente = 165;
 let contadorTiempo = 60;
 // let coordenadasX = 220;
 // let coordenadasY = 510;
@@ -26,7 +30,7 @@ function tieneNumero(array, numero) {
 function crearFruta(frutas) {
     // 3% de chance de que se ejecute este bloque de código y aparezca una frutaCheta en vez de una fruta común
     // La cual dará más puntos y tiempo extra de juego...
-    if (Math.floor(Math.random() * 100) <= 31) {
+    if (Math.floor(Math.random() * 100) <= probabilidadFrutaCheta) {
         // Defino frutaNueva como un random entre 1 y 1600
         frutaNueva = Math.floor(Math.random() * 1600) + 1;
         // Filtro frutaNueva y vuelvo a llamar esta función hasta que frutaNueva sea diferente a todas las demás
@@ -114,9 +118,11 @@ $(document).keydown(function (event) {
         // direccionSerpiente = "quieta";
         // console.log("detener");
     } else {
-        if (estadoDeJuego === 'quieto' && event.which === 39 || event.which === 40 || event.which === 37 || event.which === 38) {
-            // console.log('oof')
-            contadorTiempo--
+        if (estadoDeJuego === 'quieto') {
+            if (event.which === 39 || event.which === 40 || event.which === 37 || event.which === 38) {
+                // console.log(event.which)
+                contadorTiempo--
+            }
         }
         if (juego === 'activo') {
             if (event.which === 39 || event.which === 40 || event.which === 37 || event.which === 38) {
@@ -149,207 +155,235 @@ $(document).on("scroll", function () {
 
 
 // Bloque de código que se repetirá cada 500 milisegundos para actualizar posición de serpiente
-setInterval(function () {
-    if (tieneNumero(frutas, posicionSerpienteMoviendose)) {
-        if ($('#' + posicionSerpienteMoviendose).hasClass('frutaCheta')) {
-            $('#' + posicionSerpienteMoviendose).removeClass('frutaCheta');
-            $('#' + posicionSerpienteMoviendose).addClass('casilla');
-            puntuacion += 100;
-            contadorTiempo += 5;
-        } else {
-            $('#' + posicionSerpienteMoviendose).removeClass('fruta');
-            $('#' + posicionSerpienteMoviendose).addClass('casilla');
-            puntuacion += 50;
-        }
+// Se come la fruta ---------------------------------------------------------------------------->
+intervaloActualizarMovimientoSerpiente = setInterval(function () {                                                                    /**/
+    if (juego === 'activo') {                                                                /**/
+        if (tieneNumero(frutas, posicionSerpienteMoviendose)) {                              /**/
+            if ($('#' + posicionSerpienteMoviendose).hasClass('frutaCheta')) {               /**/
+                $('#' + posicionSerpienteMoviendose).removeClass('frutaCheta');              /**/
+                $('#' + posicionSerpienteMoviendose).addClass('casilla');                    /**/
+                // velocidadSerpiente -= 40 PREGUNTAR ---> NO FUNCA                          /**/
+                puntuacion += 10;                                                            /**/
+                contadorTiempo += 5;                                                         /**/
+            } else {                                                                         /**/
+                $('#' + posicionSerpienteMoviendose).removeClass('fruta');                   /**/
+                $('#' + posicionSerpienteMoviendose).addClass('casilla');                    /**/
+                // velocidadSerpiente -= 20 PREGUNTAR                                        /**/
+                puntuacion += 5;                                                             /**/
+            }                                                                                /**/
+        }                                                                                    /**/
+        // Se come la fruta -------------------------------------------------------------------->
 
-    }// Se come la fruta
+        if (direccionSerpiente === "quieta") {
+            // console.log("Funciona!!")
+            posicionSerpienteMoviendose = posicionSerpienteMoviendose;
+        } else if (direccionSerpiente === "derecha") {
+            // Movimiento a la derecha --------------------------------------------------------------------------------------->
+            if (posicionSerpienteMoviendose % 40 === 0) {
+                // juego = 'terminado';
+                // $('#cartelFinal').removeClass('d-none');
+                // $('#cartelFinal').append('¡¡Perdiste!!')
+                $("#" + posicionSerpienteMoviendose).addClass('casilla');
+                if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteD')) {
+                    $("#" + posicionSerpienteMoviendose).removeClass('serpienteD')
+                } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteAr')) {
+                    $("#" + posicionSerpienteMoviendose).removeClass('serpienteAr')
+                } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteAb')) {
+                    $("#" + posicionSerpienteMoviendose).removeClass('serpienteAb')
+                } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteI')) {
+                    $("#" + posicionSerpienteMoviendose).removeClass('serpienteI')
+                }
 
-    if (direccionSerpiente === "quieta") {
-        // console.log("Funciona!!")
-        posicionSerpienteMoviendose = posicionSerpienteMoviendose;
-    } else if (direccionSerpiente === "derecha") {
-        // Movimiento a la derecha --------------------------------------------------------------------------------------->
-        if (posicionSerpienteMoviendose % 40 === 0) {
-            $("#" + posicionSerpienteMoviendose).addClass('casilla');
+                posicionSerpienteMoviendose -= 39;
+                $("#" + posicionSerpienteMoviendose).removeClass('casilla');
+                $("#" + posicionSerpienteMoviendose).addClass("serpienteD");
 
-            if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteD')) {
-                $("#" + posicionSerpienteMoviendose).removeClass('serpienteD')
-            } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteAr')) {
-                $("#" + posicionSerpienteMoviendose).removeClass('serpienteAr')
-            } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteAb')) {
-                $("#" + posicionSerpienteMoviendose).removeClass('serpienteAb')
-            } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteI')) {
-                $("#" + posicionSerpienteMoviendose).removeClass('serpienteI')
+            } else {
+                $("#" + posicionSerpienteMoviendose).addClass('casilla');
+
+                if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteD')) {
+                    $("#" + posicionSerpienteMoviendose).removeClass('serpienteD')
+                } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteAr')) {
+                    $("#" + posicionSerpienteMoviendose).removeClass('serpienteAr')
+                } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteAb')) {
+                    $("#" + posicionSerpienteMoviendose).removeClass('serpienteAb')
+                } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteI')) {
+                    $("#" + posicionSerpienteMoviendose).removeClass('serpienteI')
+                }
+
+                posicionSerpienteMoviendose += 1
+
+                $("#" + posicionSerpienteMoviendose).removeClass('casilla');
+                $("#" + posicionSerpienteMoviendose).addClass("serpienteD");
+
             }
+            // Fin del movimiento a la derecha ------------------------------------------------------------------------------->
+        } else if (direccionSerpiente === "abajo") {
+            // Movimiento hacia abajo  --------------------------------------------------------------------------------------->
+            if (posicionSerpienteMoviendose > 1560) {
+                $("#" + posicionSerpienteMoviendose).addClass('casilla');
 
-            posicionSerpienteMoviendose -= 39;
-            $("#" + posicionSerpienteMoviendose).removeClass('casilla');
-            $("#" + posicionSerpienteMoviendose).addClass("serpienteD");
+                if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteD')) {
+                    $("#" + posicionSerpienteMoviendose).removeClass('serpienteD')
+                } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteAr')) {
+                    $("#" + posicionSerpienteMoviendose).removeClass('serpienteAr')
+                } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteAb')) {
+                    $("#" + posicionSerpienteMoviendose).removeClass('serpienteAb')
+                } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteI')) {
+                    $("#" + posicionSerpienteMoviendose).removeClass('serpienteI')
+                }
 
-        } else {
-            $("#" + posicionSerpienteMoviendose).addClass('casilla');
+                posicionSerpienteMoviendose -= 1560;
 
-            if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteD')) {
-                $("#" + posicionSerpienteMoviendose).removeClass('serpienteD')
-            } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteAr')) {
-                $("#" + posicionSerpienteMoviendose).removeClass('serpienteAr')
-            } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteAb')) {
-                $("#" + posicionSerpienteMoviendose).removeClass('serpienteAb')
-            } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteI')) {
-                $("#" + posicionSerpienteMoviendose).removeClass('serpienteI')
+                $("#" + posicionSerpienteMoviendose).removeClass('casilla');
+                $("#" + posicionSerpienteMoviendose).addClass("serpienteAb");
+
+            } else {
+                $("#" + posicionSerpienteMoviendose).addClass('casilla');
+
+                if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteD')) {
+                    $("#" + posicionSerpienteMoviendose).removeClass('serpienteD')
+                } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteAr')) {
+                    $("#" + posicionSerpienteMoviendose).removeClass('serpienteAr')
+                } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteAb')) {
+                    $("#" + posicionSerpienteMoviendose).removeClass('serpienteAb')
+                } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteI')) {
+                    $("#" + posicionSerpienteMoviendose).removeClass('serpienteI')
+                }
+
+                posicionSerpienteMoviendose += 40;
+                $("#" + posicionSerpienteMoviendose).removeClass('casilla');
+                $("#" + posicionSerpienteMoviendose).addClass("serpienteAb");
             }
+            // Fin del movimiento abajo --------------------------------------------------------------------------------------->
+        } else if (direccionSerpiente === "izquierda") {
+            if ((posicionSerpienteMoviendose % 40 === 1) || (posicionSerpienteMoviendose === 1)) {
+                $("#" + posicionSerpienteMoviendose).addClass('casilla');
 
-            posicionSerpienteMoviendose += 1
+                if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteD')) {
+                    $("#" + posicionSerpienteMoviendose).removeClass('serpienteD')
+                } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteAr')) {
+                    $("#" + posicionSerpienteMoviendose).removeClass('serpienteAr')
+                } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteAb')) {
+                    $("#" + posicionSerpienteMoviendose).removeClass('serpienteAb')
+                } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteI')) {
+                    $("#" + posicionSerpienteMoviendose).removeClass('serpienteI')
+                }
 
-            $("#" + posicionSerpienteMoviendose).removeClass('casilla');
-            $("#" + posicionSerpienteMoviendose).addClass("serpienteD");
+                posicionSerpienteMoviendose += 39;
+                $("#" + posicionSerpienteMoviendose).removeClass('casilla');
+                $("#" + posicionSerpienteMoviendose).addClass("serpienteI");
+            } else {
+                $("#" + posicionSerpienteMoviendose).addClass('casilla');
 
-        }
-        // Fin del movimiento a la derecha ------------------------------------------------------------------------------->
-    } else if (direccionSerpiente === "abajo") {
-        // Movimiento hacia abajo  --------------------------------------------------------------------------------------->
-        if (posicionSerpienteMoviendose > 1560) {
-            $("#" + posicionSerpienteMoviendose).addClass('casilla');
+                if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteD')) {
+                    $("#" + posicionSerpienteMoviendose).removeClass('serpienteD')
+                } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteAr')) {
+                    $("#" + posicionSerpienteMoviendose).removeClass('serpienteAr')
+                } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteAb')) {
+                    $("#" + posicionSerpienteMoviendose).removeClass('serpienteAb')
+                } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteI')) {
+                    $("#" + posicionSerpienteMoviendose).removeClass('serpienteI')
+                };
 
-            if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteD')) {
-                $("#" + posicionSerpienteMoviendose).removeClass('serpienteD')
-            } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteAr')) {
-                $("#" + posicionSerpienteMoviendose).removeClass('serpienteAr')
-            } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteAb')) {
-                $("#" + posicionSerpienteMoviendose).removeClass('serpienteAb')
-            } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteI')) {
-                $("#" + posicionSerpienteMoviendose).removeClass('serpienteI')
+                posicionSerpienteMoviendose--
+                $("#" + posicionSerpienteMoviendose).removeClass('casilla');
+                $("#" + posicionSerpienteMoviendose).addClass("serpienteI");
             }
+        } else if (direccionSerpiente === "arriba") {
+            if (posicionSerpienteMoviendose < 41) {
+                $("#" + posicionSerpienteMoviendose).addClass('casilla');
 
-            posicionSerpienteMoviendose -= 1560;
+                if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteD')) {
+                    $("#" + posicionSerpienteMoviendose).removeClass('serpienteD')
+                } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteAr')) {
+                    $("#" + posicionSerpienteMoviendose).removeClass('serpienteAr')
+                } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteAb')) {
+                    $("#" + posicionSerpienteMoviendose).removeClass('serpienteAb')
+                } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteI')) {
+                    $("#" + posicionSerpienteMoviendose).removeClass('serpienteI')
+                }
 
-            $("#" + posicionSerpienteMoviendose).removeClass('casilla');
-            $("#" + posicionSerpienteMoviendose).addClass("serpienteAb");
+                posicionSerpienteMoviendose += 1560;
+                $("#" + posicionSerpienteMoviendose).removeClass('casilla');
+                $("#" + posicionSerpienteMoviendose).addClass("serpienteAr");
+            } else {
+                $("#" + posicionSerpienteMoviendose).addClass('casilla');
 
-        } else {
-            $("#" + posicionSerpienteMoviendose).addClass('casilla');
+                if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteD')) {
+                    $("#" + posicionSerpienteMoviendose).removeClass('serpienteD')
+                } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteAr')) {
+                    $("#" + posicionSerpienteMoviendose).removeClass('serpienteAr')
+                } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteAb')) {
+                    $("#" + posicionSerpienteMoviendose).removeClass('serpienteAb')
+                } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteI')) {
+                    $("#" + posicionSerpienteMoviendose).removeClass('serpienteI')
+                }
 
-            if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteD')) {
-                $("#" + posicionSerpienteMoviendose).removeClass('serpienteD')
-            } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteAr')) {
-                $("#" + posicionSerpienteMoviendose).removeClass('serpienteAr')
-            } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteAb')) {
-                $("#" + posicionSerpienteMoviendose).removeClass('serpienteAb')
-            } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteI')) {
-                $("#" + posicionSerpienteMoviendose).removeClass('serpienteI')
+                posicionSerpienteMoviendose -= 40;
+                $("#" + posicionSerpienteMoviendose).removeClass('casilla');
+                $("#" + posicionSerpienteMoviendose).addClass("serpienteAr");
             }
-
-            posicionSerpienteMoviendose += 40;
-            $("#" + posicionSerpienteMoviendose).removeClass('casilla');
-            $("#" + posicionSerpienteMoviendose).addClass("serpienteAb");
-        }
-        // Fin del movimiento abajo --------------------------------------------------------------------------------------->
-    } else if (direccionSerpiente === "izquierda") {
-        if ((posicionSerpienteMoviendose % 40 === 1) || (posicionSerpienteMoviendose === 1)) {
-            $("#" + posicionSerpienteMoviendose).addClass('casilla');
-
-            if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteD')) {
-                $("#" + posicionSerpienteMoviendose).removeClass('serpienteD')
-            } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteAr')) {
-                $("#" + posicionSerpienteMoviendose).removeClass('serpienteAr')
-            } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteAb')) {
-                $("#" + posicionSerpienteMoviendose).removeClass('serpienteAb')
-            } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteI')) {
-                $("#" + posicionSerpienteMoviendose).removeClass('serpienteI')
-            }
-
-            posicionSerpienteMoviendose += 39;
-            $("#" + posicionSerpienteMoviendose).removeClass('casilla');
-            $("#" + posicionSerpienteMoviendose).addClass("serpienteI");
-        } else {
-            $("#" + posicionSerpienteMoviendose).addClass('casilla');
-
-            if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteD')) {
-                $("#" + posicionSerpienteMoviendose).removeClass('serpienteD')
-            } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteAr')) {
-                $("#" + posicionSerpienteMoviendose).removeClass('serpienteAr')
-            } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteAb')) {
-                $("#" + posicionSerpienteMoviendose).removeClass('serpienteAb')
-            } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteI')) {
-                $("#" + posicionSerpienteMoviendose).removeClass('serpienteI')
-            };
-
-            posicionSerpienteMoviendose--
-            $("#" + posicionSerpienteMoviendose).removeClass('casilla');
-            $("#" + posicionSerpienteMoviendose).addClass("serpienteI");
-        }
-    } else if (direccionSerpiente === "arriba") {
-        if (posicionSerpienteMoviendose < 41) {
-            $("#" + posicionSerpienteMoviendose).addClass('casilla');
-
-            if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteD')) {
-                $("#" + posicionSerpienteMoviendose).removeClass('serpienteD')
-            } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteAr')) {
-                $("#" + posicionSerpienteMoviendose).removeClass('serpienteAr')
-            } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteAb')) {
-                $("#" + posicionSerpienteMoviendose).removeClass('serpienteAb')
-            } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteI')) {
-                $("#" + posicionSerpienteMoviendose).removeClass('serpienteI')
-            }
-
-            posicionSerpienteMoviendose += 1560;
-            $("#" + posicionSerpienteMoviendose).removeClass('casilla');
-            $("#" + posicionSerpienteMoviendose).addClass("serpienteAr");
-        } else {
-            $("#" + posicionSerpienteMoviendose).addClass('casilla');
-
-            if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteD')) {
-                $("#" + posicionSerpienteMoviendose).removeClass('serpienteD')
-            } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteAr')) {
-                $("#" + posicionSerpienteMoviendose).removeClass('serpienteAr')
-            } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteAb')) {
-                $("#" + posicionSerpienteMoviendose).removeClass('serpienteAb')
-            } else if ($("#" + posicionSerpienteMoviendose).hasClass('serpienteI')) {
-                $("#" + posicionSerpienteMoviendose).removeClass('serpienteI')
-            }
-
-            posicionSerpienteMoviendose -= 40;
-            $("#" + posicionSerpienteMoviendose).removeClass('casilla');
-            $("#" + posicionSerpienteMoviendose).addClass("serpienteAr");
         }
     }
-
-
 }, velocidadSerpiente)
 
-$('#contadorTiempo').text(contadorTiempo);
-setInterval(() => {
-    $('#contadorTiempo').text(contadorTiempo);
-}, 100);
-setInterval(() => {
-    if (estadoDeJuego === 'quieto') {
 
-    } else {
-        if (contadorTiempo != 0) {
-            contadorTiempo--
-        } else if (contadorTiempo == 0) {
-            contadorTiempo = 0;
-            $('#cartelFinal').append('Felicidades! <br> Tu puntuación fue: ' + puntuacion);
-            $('#cartelFinal').removeClass('d-none');
+
+$('#contadorTiempo').text(contadorTiempo);
+intervaloActualizarTiempoYPuntaje = setInterval(() => {
+    $('#contadorTiempo').text(contadorTiempo);
+    $('#contadorPuntos').text(puntuacion);
+    if (contadorTiempo == 0 || contadorTiempo < 0) {
+        clearInterval(intervaloActualizarTiempoYPuntaje)
+    }
+}, 1);
+$('#cartelFinal').css('opacity', '1');
+let contadorTiempoAuxiliar = 0;
+$(document).keydown(function (event) {
+    if (event.which === 39 || event.which === 40 || event.which === 37 || event.which === 38) {
+        if (contadorTiempoAuxiliar === 0) {
+            contadorTiempoAuxiliar++
+            intervaloContador = setInterval(() => {
+                if (contadorTiempo != 0) {
+                    contadorTiempo--
+                } else if (contadorTiempo == 0) {
+                    contadorTiempo = -1;
+                    direccionSerpiente = 'quieta';
+                    juego = 'terminado';
+                    if (puntuacion == 0) {
+                        aviso = 'Qué cagada!';
+                    } else {
+                        aviso = 'Terminaste!'
+                    }
+                    $('#cartelFinal').append(aviso + ' <br> Tu puntuación fue: ' + puntuacion);
+                    setTimeout(() => {
+                        $('#cartelFinal').slideDown();
+                    }, 150); 
+                    clearInterval(intervaloContador);
+                }
+            }, 1000);
         }
     }
-}, 1000);
+})
+
 
 let fruitIndex = 0;
 frutas = []
-setInterval(() => {
+intervaloDeFrutas = setInterval(() => {
     if (direccionSerpiente != 'quieta') {
-
+        if (juego === 'terminado') {
+            clearInterval(intervaloDeFrutas);
+        }
         crearFruta(frutas)
         fruitIndex++
     } else if (direccionSerpiente === 'quieta') {
-        return false
+        juego = 'terminado';
     }
 }, tasaAparicionFruta);
 
 while (estadoDeJuego === 'corriendo') {
     if ($('#estadoDeJuego').hasClass('d-none')) {
-
     } else {
         $('#estadoDeJuego').addClass('d-none');
     }

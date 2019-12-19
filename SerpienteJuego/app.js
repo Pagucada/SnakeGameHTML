@@ -4,18 +4,54 @@ $('#cartelFinal').slideUp(1);
 
 let i = 1;
 // Indice con el cual se definirá la id de cada 'div.casilla'
-let probabilidadFrutaCheta = 49
+let probabilidadFrutaCheta = 8
 let puntuacion = 0;
 let juego = 'activo';
-let tasaAparicionFruta = 2500;
+let tasaAparicionFruta = 1500;
 let direccionSerpiente = "quieta";
 let estadoDeJuego = "quieto";
-let velocidadSerpiente = 165;
+let velocidadSerpiente = 200;
 let contadorTiempo = 60;
 // let coordenadasX = 220;
 // let coordenadasY = 510;
 
 // posicionSerpienteInicial es un número random que abarca desde el 1 hasta el 1601
+$('#contadorTiempo').text(contadorTiempo);
+$('#cartelFinal').css('opacity', '1');
+let contadorTiempoAuxiliar = 0;
+$(document).keydown(function(event) {
+    if (event.which === 39 || event.which === 40 || event.which === 37 || event.which === 38) {
+        if (contadorTiempoAuxiliar === 0) {
+            contadorTiempoAuxiliar++
+            intervaloContador = setInterval(() => {
+                if (contadorTiempo != 0) {
+                    contadorTiempo--
+                } else if (contadorTiempo == 0) {
+                    contadorTiempo = -1;
+                    direccionSerpiente = 'quieta';
+                    juego = 'terminado';
+                    if (puntuacion == 0) {
+                        aviso = 'Noob!';
+                    } else {
+                        aviso = 'Terminaste!'
+                    }
+                    $('#cartelFinal').append(aviso + ' <br> Tu puntuación fue: ' + puntuacion);
+                    setTimeout(() => {
+                        $('#cartelFinal').slideDown();
+                    }, 150); 
+                    clearInterval(intervaloContador);
+                }
+            }, 1000);
+        }
+    }
+})
+intervaloActualizarTiempoYPuntaje = setInterval(() => {
+    $('#contadorTiempo').text(contadorTiempo);
+    $('#contadorPuntos').text(puntuacion);
+    if (contadorTiempo <= 0 ) {
+        clearInterval(intervaloActualizarTiempoYPuntaje)
+    }
+}, 1000);
 let posicionSerpienteInicial = Math.floor(Math.random() * 1600) + 1;
 
 function tieneNumero(array, numero) {
@@ -60,7 +96,7 @@ function crearFruta(frutas) {
     }
 }
 
-
+// Se crea el tablero
 for (columna = 0; columna < 40; columna++) {
     if (i === posicionSerpienteInicial) {
         $("#tablero").append("<div class='casilla serpienteAb' id='" + i + "'>");
@@ -122,6 +158,7 @@ $(document).keydown(function (event) {
             if (event.which === 39 || event.which === 40 || event.which === 37 || event.which === 38) {
                 // console.log(event.which)
                 contadorTiempo--
+                estadoDeJuego = 'activo';
             }
         }
         if (juego === 'activo') {
@@ -149,9 +186,9 @@ $(document).keydown(function (event) {
 
 
 
-$(document).on("scroll", function () {
-    // console.log("Y" + Math.floor(scrollY) + " | X" + Math.floor(scrollX))
-});
+// $(document).on("scroll", function () {
+//     // console.log("Y" + Math.floor(scrollY) + " | X" + Math.floor(scrollX))
+// });
 
 
 // Bloque de código que se repetirá cada 500 milisegundos para actualizar posición de serpiente
@@ -330,42 +367,8 @@ intervaloActualizarMovimientoSerpiente = setInterval(function () {              
 
 
 
-$('#contadorTiempo').text(contadorTiempo);
-intervaloActualizarTiempoYPuntaje = setInterval(() => {
-    $('#contadorTiempo').text(contadorTiempo);
-    $('#contadorPuntos').text(puntuacion);
-    if (contadorTiempo == 0 || contadorTiempo < 0) {
-        clearInterval(intervaloActualizarTiempoYPuntaje)
-    }
-}, 1);
-$('#cartelFinal').css('opacity', '1');
-let contadorTiempoAuxiliar = 0;
-$(document).keydown(function (event) {
-    if (event.which === 39 || event.which === 40 || event.which === 37 || event.which === 38) {
-        if (contadorTiempoAuxiliar === 0) {
-            contadorTiempoAuxiliar++
-            intervaloContador = setInterval(() => {
-                if (contadorTiempo != 0) {
-                    contadorTiempo--
-                } else if (contadorTiempo == 0) {
-                    contadorTiempo = -1;
-                    direccionSerpiente = 'quieta';
-                    juego = 'terminado';
-                    if (puntuacion == 0) {
-                        aviso = 'Qué cagada!';
-                    } else {
-                        aviso = 'Terminaste!'
-                    }
-                    $('#cartelFinal').append(aviso + ' <br> Tu puntuación fue: ' + puntuacion);
-                    setTimeout(() => {
-                        $('#cartelFinal').slideDown();
-                    }, 150); 
-                    clearInterval(intervaloContador);
-                }
-            }, 1000);
-        }
-    }
-})
+
+
 
 
 let fruitIndex = 0;
@@ -382,12 +385,7 @@ intervaloDeFrutas = setInterval(() => {
     }
 }, tasaAparicionFruta);
 
-while (estadoDeJuego === 'corriendo') {
-    if ($('#estadoDeJuego').hasClass('d-none')) {
-    } else {
-        $('#estadoDeJuego').addClass('d-none');
-    }
-}
+
 
 // Poner contador de 60 segundos que cuando llegue a cero termine el juego
 // Poner contador de puntaje que contará las frutas comidas

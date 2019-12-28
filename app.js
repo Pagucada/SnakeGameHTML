@@ -4,6 +4,12 @@ $("#cartelFinal").slideUp(1);
 let audioPuntuacionCero = new Audio("Audio/roblox-death-sound-effect.mp3");
 audioPuntuacionCero.loop = false;
 audioPuntuacionCero.play();
+let audioBackgroundSound1 = new Audio("Audio/videoplayback.mp4");
+audioBackgroundSound1.loop = false;
+audioBackgroundSound1.play();
+let audioPuntuacionBuena = new Audio("Audio/ho-ho-ho.mp3");
+audioPuntuacionBuena.loop = false;
+audioPuntuacionBuena.play();
 
 // debugger
 let i = 1;
@@ -30,18 +36,21 @@ $(document).keydown(function(event) {
     event.which === 37 ||
     event.which === 38
   ) {
+    audioBackgroundSound1.play();
     if (contadorTiempoAuxiliar === 0) {
       contadorTiempoAuxiliar++;
       intervaloContador = setInterval(() => {
         if (contadorTiempo != 0) {
           contadorTiempo--;
         } else if (contadorTiempo == 0) {
+          audioBackgroundSound1.pause();
           contadorTiempo = -1;
           direccionSerpiente = "muerta";
 
           if (puntuacion == 0) {
             aviso = "Noob!";
           } else {
+            audioPuntuacionBuena.play();
             aviso = "Terminaste!";
           }
           juego = "terminado";
@@ -60,7 +69,9 @@ $(document).keydown(function(event) {
 intervaloActualizarTiempoYPuntaje = setInterval(() => {
   $("#contadorTiempo").text(contadorTiempo);
   if (contadorTiempo <= 0 && puntuacion === 0) {
-    audioPuntuacionCero.play();
+    setTimeout(() => {
+      audioPuntuacionCero.play();
+    }, 80);
     clearInterval(intervaloActualizarTiempoYPuntaje);
   }
   if (contadorTiempo <= 0) {

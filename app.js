@@ -1,17 +1,21 @@
 $("#cartelFinal").css("opacity", "0");
 $("#cartelFinal").slideUp(1);
 
+let audioPuntuacionCero = new Audio("Audio/roblox-death-sound-effect.mp3");
+audioPuntuacionCero.loop = false;
+audioPuntuacionCero.play();
+
 // debugger
 let i = 1;
 // Indice con el cual se definirá la id de cada 'div.casilla'
-let probabilidadFrutaCheta = 19;
+let probabilidadFrutaCheta = 9;
 let puntuacion = 0;
 let juego = "activo";
 let tasaAparicionFruta = 3000;
 let direccionSerpiente = "quieta";
 let estadoDeJuego = "quieto";
-let velocidadSerpiente = 45;
-let contadorTiempo = 60;
+let velocidadSerpiente = 75;
+let contadorTiempo = 4;
 // let coordenadasX = 220;
 // let coordenadasY = 510;
 
@@ -24,7 +28,7 @@ $(document).keydown(function(event) {
     event.which === 39 ||
     event.which === 40 ||
     event.which === 37 ||
-    event.which === 38 
+    event.which === 38
   ) {
     if (contadorTiempoAuxiliar === 0) {
       contadorTiempoAuxiliar++;
@@ -55,7 +59,12 @@ $(document).keydown(function(event) {
 });
 intervaloActualizarTiempoYPuntaje = setInterval(() => {
   $("#contadorTiempo").text(contadorTiempo);
+  if (contadorTiempo <= 0 && puntuacion === 0) {
+    audioPuntuacionCero.play();
+    clearInterval(intervaloActualizarTiempoYPuntaje);
+  }
   if (contadorTiempo <= 0) {
+    direccionSerpiente = "quieta";
     clearInterval(intervaloActualizarTiempoYPuntaje);
   }
 }, 1000);
@@ -170,6 +179,7 @@ $(document).keydown(function(event) {
       ) {
         // console.log(event.which)
         contadorTiempo--;
+        $("#contadorTiempo").text(contadorTiempo);
         estadoDeJuego = "activo";
       }
     }
@@ -435,17 +445,15 @@ let fruitIndex = 0;
 frutas = [];
 intervaloDeFrutas = setInterval(() => {
   if (estadoDeJuego === "activo") {
-    if (direccionSerpiente != "muerta") 
-    {
-      if (juego === "terminado") 
-      {
+    if (direccionSerpiente != "muerta") {
+      if (juego === "terminado") {
         clearInterval(intervaloDeFrutas);
       }
       crearFruta(frutas);
       fruitIndex++;
-    } else if (direccionSerpiente === "muerta") 
-    {
+    } else if (direccionSerpiente === "muerta") {
       juego = "terminado";
+      estadoDeJuego = "quieto";
     }
   }
 }, tasaAparicionFruta);

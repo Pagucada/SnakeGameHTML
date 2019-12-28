@@ -7,9 +7,26 @@ audioPuntuacionCero.play();
 let audioBackgroundSound1 = new Audio("Audio/videoplayback.mp4");
 audioBackgroundSound1.loop = false;
 audioBackgroundSound1.play();
+let audioBackgroundSound2 = new Audio("Audio/chega-de-saudade.mp3");
+audioBackgroundSound2.loop = false;
+audioBackgroundSound2.play();
 let audioPuntuacionBuena = new Audio("Audio/ho-ho-ho.mp3");
 audioPuntuacionBuena.loop = false;
 audioPuntuacionBuena.play();
+
+let backgroundSounds = [audioBackgroundSound1, audioBackgroundSound2]
+function randomBackgroundNumber() {
+  randomNumber = Math.floor(Math.random() * 10)
+  if (randomNumber > 8) 
+  {
+    return 1
+  } 
+  else 
+  {
+    return 0
+  }
+}
+cancionDeSesion = randomBackgroundNumber(); 
 
 // debugger
 let i = 1;
@@ -17,7 +34,7 @@ let i = 1;
 let probabilidadFrutaCheta = 9;
 let puntuacion = 0;
 let juego = "activo";
-let tasaAparicionFruta = 3000;
+let tasaAparicionFruta = 2850;
 let direccionSerpiente = "quieta";
 let estadoDeJuego = "quieto";
 let velocidadSerpiente = 75;
@@ -36,14 +53,14 @@ $(document).keydown(function(event) {
     event.which === 37 ||
     event.which === 38
   ) {
-    audioBackgroundSound1.play();
+    backgroundSounds[cancionDeSesion].play();
     if (contadorTiempoAuxiliar === 0) {
       contadorTiempoAuxiliar++;
       intervaloContador = setInterval(() => {
         if (contadorTiempo != 0) {
           contadorTiempo--;
         } else if (contadorTiempo == 0) {
-          audioBackgroundSound1.pause();
+          backgroundSounds[cancionDeSesion].pause();
           contadorTiempo = -1;
           direccionSerpiente = "muerta";
 

@@ -15,7 +15,7 @@ let tasaAparicionFruta = 3000;
 let direccionSerpiente = "quieta";
 let estadoDeJuego = "quieto";
 let velocidadSerpiente = 75;
-let contadorTiempo = 4;
+let contadorTiempo = 60;
 // let coordenadasX = 220;
 // let coordenadasY = 510;
 

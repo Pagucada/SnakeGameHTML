@@ -16,8 +16,8 @@ audioPuntuacionBuena.play();
 
 let backgroundSounds = [audioBackgroundSound1, audioBackgroundSound2]
 function randomBackgroundNumber() {
-  randomNumber = Math.floor(Math.random() * 10)
-  if (randomNumber > 8) 
+  randomNumber = Math.floor(Math.random() * 99)
+  if (randomNumber > 49) 
   {
     return 1
   } 
@@ -37,7 +37,7 @@ let juego = "activo";
 let tasaAparicionFruta = 2850;
 let direccionSerpiente = "quieta";
 let estadoDeJuego = "quieto";
-let velocidadSerpiente = 75;
+let velocidadSerpiente = 50;
 let contadorTiempo = 60;
 // let coordenadasX = 220;
 // let coordenadasY = 510;

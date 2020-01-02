@@ -64,7 +64,7 @@ $(document).keydown(function(event) {
           contadorTiempo = -1;
           direccionSerpiente = "muerta";
 
-          if (puntuacion == 0) {
+          if (puntuacion < 100) {
             aviso = "Noob!";
           } else {
             audioPuntuacionBuena.play();
@@ -85,7 +85,7 @@ $(document).keydown(function(event) {
 });
 intervaloActualizarTiempoYPuntaje = setInterval(() => {
   $("#contadorTiempo").text(contadorTiempo);
-  if (contadorTiempo <= 0 && puntuacion === 0) {
+  if (contadorTiempo <= 0 && puntuacion < 100) {
     setTimeout(() => {
       audioPuntuacionCero.play();
     }, 80);
